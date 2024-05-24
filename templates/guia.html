@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Técnicas de Relajación</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-gray-100 flex">
+    <div class="flex-1 flex flex-col h-screen">
+        <!-- Barra lateral -->
+        <div id="sidebar" class="fixed inset-0 bg-white bg-opacity-75 flex justify-start transform -translate-x-full transition-transform">
+            <div class="bg-white w-64 p-4" onmouseleave="closeSidebar()">
+                <ul class="space-y-4 text-xl font-bold text-[#6cbdb5]">
+                    <li><a href="/">Inicio</a></li>
+                    <li><a href="/testimonio"testimonio>Testimonios</a></li>
+                    <li><a href="/contactos">Contactos</a></li>
+                    <li><a href="/guia">Guia para tecnica de relajacion</a></li>
+                </ul>
+            </div>
+        </div>
+
+
+    <!-- Botón para abrir la barra lateral -->
+    <header class="flex justify-between bg-blue-500 p-4 items-center">
+        <button id="menu-button" class="text-2xl"><img src="/static/sidebar2.png" class="h-15 w-7" alt=""></button>
+        <div class="items-center text-center text-white">
+            <h1 class="text-3xl font-bold">Técnicas de Relajación</h1>
+            <p class="mt-2">Aprende a relajarte y disfrutar de los beneficios para tu bienestar.</p>
+        </div>
+        <img class="h-20 w-20" src="/static/logoiayuda-removebg-preview_1.png alt=">
+    </header>
+
+    <!-- Resto del contenido de la página -->
+
+    <script>
+        // Funcionalidad de la barra lateral
+        const sidebar = document.getElementById('sidebar');
+        const menuButton = document.getElementById('menu-button');
+
+        menuButton.addEventListener('click', function() {
+            if (sidebar.classList.contains('-translate-x-full')) {
+                sidebar.classList.remove('-translate-x-full');
+            } else {
+                sidebar.classList.add('-translate-x-full');
+            }
+        });
+
+        function closeSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.add('-translate-x-full');
+        }
+    </script>
+
+
+
+    
+
+    <main class="container mx-auto py-8">
+        <section class="mb-8">
+            <h2 class="text-2xl font-bold mb-4">¿Por qué es importante relajarse?</h2>
+            <p class="text-lg">Ayuda a reducir los niveles de cortisol, la hormona del estrés, en el cuerpo. Cuando estamos estresados, nuestro cuerpo libera cortisol en el torrente sanguíneo, lo que puede tener efectos negativos en la salud a largo plazo. Al practicar técnicas de relajación, como la respiración profunda o la meditación, podemos reducir estos niveles de cortisol y sentirnos más tranquilos y en control. La relajación promueve la calma mental y la claridad de pensamiento. Al tomar un tiempo para relajarnos, podemos liberar la tensión acumulada en nuestra mente y permitirnos enfocarnos en el presente. Esto puede ayudar a reducir la ansiedad, mejorar el estado de ánimo y promover una sensación general de bienestar.</p>
+        </section>
+
+        <section class="mb-8 ">
+            <h2 class="text-2xl font-bold mb-4">Técnicas de Relajación</h2>
+            <ul class="list-disc list-inside">
+                <li class="mb-2">Respiración Profunda</li>
+                <li class="mb-2">Meditación</li>
+                <li class="mb-2">Yoga</li>
+                <li class="mb-2">Visualización Guiada</li>
+                <li class="mb-2">Masaje</li>
+                <li class="mb-2">Tai Chi</li>
+            </ul>
+        </section>
+
+        <section class="mb-8">
+            <h2 class="text-2xl font-bold mb-4">Ventajas de la Relajación</h2>
+            <ul class="list-disc list-inside">
+                <li class="mb-2">Reducción del Estrés y la Ansiedad</li>
+                <li class="mb-2">Mejora del Sueño</li>
+                <li class="mb-2">Aumento de la Concentración</li>
+                <li class="mb-2">Menor Tensión Muscular</li>
+                <li class="mb-2">Mayor Bienestar Emocional</li>
+            </ul>
+        </section>
+    </main>
+
+    <footer class="bg-blue-500 text-white text-center py-4">
+        <p>&copy; 2024 Técnicas de Relajación</p>
+    </footer>
+
+    <script>
+        
+    </script>
+</body>
+
+</html>

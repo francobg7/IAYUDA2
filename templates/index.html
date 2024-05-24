@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IAYUDA</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+    
+</head>
+<body class="bg-gray-100 flex">
+    <div class="flex-1 flex flex-col h-screen">
+        <!-- Barra lateral -->
+        <div id="sidebar" class="fixed inset-0 bg-white bg-opacity-75 flex justify-start transform -translate-x-full transition-transform">
+            <div class="bg-white w-64 p-4" onmouseleave="closeSidebar()">
+                <ul class="space-y-4 text-xl font-bold text-[#6cbdb5]">
+                    <li><a href="/">Inicio</a></li>
+                    <li><a href="/testimonio">Testimonios</a></li>
+                    <li><a href="/contactos">Contactos</a></li>
+                    <li><a href="/guia">Guia para tecnica de relajacion</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- BotÃ³n para abrir la barra lateral -->
+        <header class="flex justify-between bg-[#047CAF] p-4 items-center">
+            <button id="menu-button" class="text-2xl"><img src="/static/sidebar2.png" class="h-15 w-7" alt=""></button>
+            <div id="frase-del-dia" class="text-center text-[#FFFFFF] text-xl text-font-sans font-bold text-4xl mb-4"></div>
+            <img class="h-20 w-20" src="/static/logoiayuda-removebg-preview_1.png" alt="">
+        </header>
+
+    
+
+        <section class="p-6 flex-1 flex flex-col">
+            <div class="flex-1 flex flex-col justify-start">
+                
+                <div id="chat-container" class="bg-white rounded shadow-md w-full max-w-2xl mx-auto flex flex-col h-3/4 overflow-y-auto">
+                    <div id="chat-box" class="flex-1 p-4"></div>
+                    <div class="flex border-t-2 border-yellow-500">
+                        <input type="text" id="message-input" placeholder="Escribe un mensaje..." class="flex-grow p-4 text-lg focus:outline-none">
+                        <button id="send-btn"><img class="h-15 w-10" src="/static/botonenviar.png" alt=""></button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const frases = [
+                "NO HAY SALUD SIN SALUD MENTAL",
+                "LA SALUD MENTAL ES IGUAL QUE LA SALUD FISICA, Y NO DEBERIAMOS TENER MIEDO DE CUIDARLO",
+                "CUIDA TU MENTE ES EL UNICO LUGAR EN DONDE TIENES QUE VIVIR",
+                "LA SALUD MENTAL ES UN VIAJE, NO UN DESTINO. ES IMPORTANTE SER AMABLES Y COMPASIVOS CON NOSOTROS MISMOS DURANTE ESE VIAJE",
+                "ES IMPORTANTE RECORDAR  QUE ESTA BIEN NO ESTAR BIEN AVECES, Y QUE PEDIR AYUDA ES UN PASO VALIENTE HACIA LA CURACION",
+                "CUIDAR DE NUESTRA SALUD MENTALES LA CLAVE PARA VIVIR UNA VIDA PLENA Y FELIZ",
+
+            ];
+
+            const today = new Date();
+            const dayIndex = today.getDate() % frases.length;
+            const fraseDelDia = frases[dayIndex];
+            document.getElementById("frase-del-dia").innerText = fraseDelDia;
+
+            const socket = io();
+
+            socket.on('receive_message', function(data) {
+                const chatBox = document.getElementById('chat-box');
+                const messageElement = document.createElement('div');
+                messageElement.textContent = `Bot: ${data.message}`;
+                messageElement.classList.add('message', 'bot-message', 'bg-gray-300', 'self-start', 'my-2', 'p-2', 'rounded-md', 'text-lg');
+                chatBox.appendChild(messageElement);
+                chatBox.scrollTop = chatBox.scrollHeight;
+            });
+
+            socket.on('cargando_respuesta', function(data) {
+                const chatBox = document.getElementById('chat-box');
+                const messageElement = document.createElement('div');
+                messageElement.textContent = `Bot: ${data.message}`;
+                messageElement.classList.add('message', 'loading-message', 'bg-yellow-300', 'self-start', 'my-2', 'p-2', 'rounded-md', 'text-lg');
+                chatBox.appendChild(messageElement);
+                chatBox.scrollTop = chatBox.scrollHeight;
+            });
+
+            const sendBtn = document.getElementById('send-btn');
+            const messageInput = document.getElementById('message-input');
+
+            function sendMessage() {
+                const message = messageInput.value;
+                if (message.trim() !== '') {
+                    const chatBox = document.getElementById('chat-box');
+                    const messageElement = document.createElement('div');
+                    messageElement.textContent = `You: ${message}`;
+                    messageElement.classList.add('message', 'user-message', 'bg-[#FFED59]', 'self-end', 'my-2', 'p-2', 'rounded-md', 'text-[#231F1C]', 'text-lg');
+                    chatBox.appendChild(messageElement);
+                    messageInput.value = '';
+                    chatBox.scrollTop = chatBox.scrollHeight;
+                    socket.emit('send_message', {'message': message});
+                }
+            }
+
+            sendBtn.addEventListener('click', sendMessage);
+            messageInput.addEventListener('keypress', (event) => {
+                if (event.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+
+            // Funcionalidad de la barra lateral
+            const sidebar = document.getElementById('sidebar');
+            const menuButton = document.getElementById('menu-button');
+
+            menuButton.addEventListener('click', function() {
+                if (sidebar.classList.contains('-translate-x-full')) {
+                    sidebar.classList.remove('-translate-x-full');
+                } else {
+                    sidebar.classList.add('-translate-x-full');
+                }
+            });
+        });
+
+        function closeSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.add('-translate-x-full');
+        }
+    </script>
+</body>
+</html>
